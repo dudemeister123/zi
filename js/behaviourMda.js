@@ -167,7 +167,9 @@ var clienti = {
         var oraPrimaProgramare = oprogramare.oraProgramare;
         var tot = document.getElementsByClassName("orar"); //de la var tot ai posibilitatea sa compari children[0]ora   [1]pacient cu primulOBJ?
         
-            for(var i=0;i<tot.length;i++)
+         
+
+          for(var i=0;i<tot.length;i++)
             {
                 //if(tot[i].children[1].innerHTML == ''){
                 if(oraPrimaProgramare == tot[i].children[0].innerHTML )
@@ -237,6 +239,7 @@ var clienti = {
                  
                         tot[k].children[1].innerHTML = inputNume + " " +inputNumar;
 
+                  
                     };
                     //return;
                     console.log('iDurata:',inputDurata)
@@ -278,15 +281,14 @@ var clienti = {
     unEventPeOre : function() 
         {
             var ore = document.getElementsByClassName('orar');
+            var selectTime = document.getElementById("select");
             
             //var ore = document.getElementsByClassName('oraText');
 
-            var selectTime = document.getElementById("select");
            // console.log('selecttime',selectTime.options.text);
             function io(e)
 
                 {
-                    console.log('e.currentTarget: ', e.currentTarget.children[0].innerHTML);   
                    for(var i = 0;i<selectTime.options.length;i++){ 
                     console.log(selectTime.options[i].text);
                     
