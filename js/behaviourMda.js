@@ -72,7 +72,7 @@ var clienti = {
         this.unEventPeOre();
         this.backButton();
         //this.adaugaClienti();
-        this.eventPeFiecareArrayProg();
+       // this.eventPeFiecareArrayProg();
      },
 
     cacheDom: function() {
@@ -87,6 +87,7 @@ var clienti = {
         this.durata= document.getElementById('value-duration');
         this.buton = document.getElementById('value-np-button');
         this.butonData = document.getElementById('butonProgDirect');
+        this.popup = document.getElementById('popupDiv');
      },
 
      
@@ -202,6 +203,9 @@ var clienti = {
             console.log('!!!!!! this  este: ', this);
             console.log('!!!!!! this.a este: ', this.a);
             this.a.style.background = 'white';
+
+
+
             //this.style.background = 'black';
         }
 
@@ -296,6 +300,7 @@ var clienti = {
                         console.log('iDurata:',inputDurata);
                         console.log('inputNume:',typeof inputNume);
                         console.log('inputNumar:',typeof inputNumar);
+                        this.popup.style.display = 'none';
                     } else {
                         alert("Este deja o programare pt aceasta ora");
                         return;
@@ -312,6 +317,49 @@ var clienti = {
 
     manipulator_progFacute: function(iName,iNumber,iDuration)
     {
+        function ataseaza(e)
+        {   
+            var aa = e.target;
+            console.log('!!!!!! event target este: ',e.target);
+            //console.log('!!!!!! this  este: ', this);
+            console.log('!!!!!! aa este: ', aa);
+            aa.style.background = 'white';
+
+            for (var kk =0;kk<this.programarilePeDivuri.length;kk++)
+            {
+                if (this.programarilePeDivuri[kk].indexOf(aa)>=0)
+                {
+                    for (var k2=0;k2<this.programarilePeDivuri[kk].length;k2++)
+                    {
+                        this.programarilePeDivuri[kk][k2].style.background = 'white';
+                        //this.programarilePeDivuri[kk][k2].style.opacity = 0.4;
+                    }
+                }
+            }
+        }
+
+        function ataseazaOut(e)
+        {   
+            var aa = e.target;
+            console.log('!!!!!! event target este: ',e.target);
+            //console.log('!!!!!! this  este: ', this);
+            console.log('!!!!!! aa este: ', aa);
+            aa.style.background = 'white';
+
+            for (var kk =0;kk<this.programarilePeDivuri.length;kk++)
+            {
+                if (this.programarilePeDivuri[kk].indexOf(aa)>=0)
+                {
+                    for (var k2=0;k2<this.programarilePeDivuri[kk].length;k2++)
+                    {
+                        this.programarilePeDivuri[kk][k2].style.background = 'none';
+                    }
+                }
+            }
+        }
+
+        
+
        this.name= iName; 
        this.number= iNumber; 
        this.duration= iDuration; 
@@ -330,7 +378,10 @@ var clienti = {
                     {
                         count++;
                         var a  = parent_prog[i].children[1];   
+                        a.addEventListener('mouseover', ataseaza.bind(this), false);
+                        a.addEventListener('mouseout', ataseazaOut.bind(this), false);
                         prg.push(a);
+
                         //console.log("this.programarilePeDivuri in interiorul functii: " ,this.programarilePeDivuri);
                     //puteam folosi aceste 2 divuri sa si schimbe stilul simultan?    
                         console.log('2/3 count este : ',count);
@@ -341,7 +392,8 @@ var clienti = {
                 };
             this.programarilePeDivuri.push(prg);
 
-            this.eventPeFiecareArrayProg();
+            //this.eventPeFiecareArrayProg();
+
         // for(var j=0;j<this.programarilePeDivuri.length;j++)
         // {
         //     var b= this.programarilePeDivuri[i];
@@ -354,7 +406,7 @@ var clienti = {
                 
         // };
 
-           
+        
 //var pacient_Un= new manipulator_progFacute 
        console.log('1.numele preluate din addNP: ',this.name);
        console.log('2.numarul  preluate din addNP: ',this.number);
