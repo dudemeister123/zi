@@ -4,7 +4,7 @@
         console.log();
 var clienti = {
          
-    
+    programarilePeDivuri:[],
         programariTest : [
             {
                 ora_programare: "9:00",
@@ -27,7 +27,7 @@ var clienti = {
         ],
 
           
-        ziTest   :"Luni" ,
+       // ziTest   :"Luni" ,
         //dataTest :"12.01.2017",
         proTest  :[] , 
 
@@ -72,6 +72,7 @@ var clienti = {
         this.unEventPeOre();
         this.backButton();
         //this.adaugaClienti();
+        this.eventPeFiecareArrayProg();
      },
 
     cacheDom: function() {
@@ -177,7 +178,7 @@ var clienti = {
 
                 tot[i].children[1].innerHTML = numeP + " iar durata este de :" + durataP ;
 
-                for(j=i;j<i+durataP;j++)//de la ora la care incepe programarea[i] inca cat dureaza programarea (duratap)
+                for(varj=i;j<i+durataP;j++)//de la ora la care incepe programarea[i] inca cat dureaza programarea (duratap)
                 {
              
                 tot[j].children[1].innerHTML = numeP;
@@ -194,17 +195,57 @@ var clienti = {
         //console.log(oprogramare.ora_programare);
     },
 
-    checkIfItsFree: function()
-    {
-           var selecta = document.getElementById("select").value;
-           var inputDurata = this.durata.value;
+    eventPeFiecareArrayProg: function()
+    {   
+        function ataseaza(e)
+        {   console.log('!!!!!! event target este: ',e.target);
+            console.log('!!!!!! this  este: ', this);
+            console.log('!!!!!! this.a este: ', this.a);
+            this.a.style.background = 'white';
+            //this.style.background = 'black';
+        }
 
+        console.log('@@@ programarilePeDivuri in functie se vede',this.programarilePeDivuri); 
+        for(var j =0;j<this.programarilePeDivuri.length;j++)
+            {   
+            console.log('@@@ programarilePeDivuri in functie in for se vede',this.programarilePeDivuri[j]); 
+                for(var k=0;k<this.programarilePeDivuri[j].length;k++)
+                    {    
+                        console.log('@@@@@@@@@@@@',this.programarilePeDivuri[j][k]);
+                        this.a = this.programarilePeDivuri[j][k]
+                        this.a.addEventListener('mouseover', ataseaza.bind(this), false);
+                    };
+                //var k = j+1;
+                //console.log('####this.programarilePeDivuri[j]',this.programarilePeDivuri[j]);
+            
+            // console.log('@@@@pro[j].length array care contine aray de fiecare prog ',pro[j]);
+            //   pro[j].addEventListener('mouseover',function(){
+
+            //     console.log('sa dat click');
+            //   });  
+            //console.log('#####pro.pacientText.length este vizibil',pro.pacientText);
+                //for(var k=0;k<pro.pacientText.length;k++)
+                   // {
+
+                    //console.log('@@@@pro[j].length array care contine aray de fiecare prog ',pro[j].pacientText[k]);
+                    
+                    //};
+                //var k = j+1;
+                // pro[j].addEventListener("mouseover", function(ev){
+                //     pro = event.target;
+                //     pro.style.backgroundColor = 'white';
+                // });
+                //console.log("@@@ toate this.programarilePeDivuri.Eu am nevoie de divuri ?:",pro[j]);
+            };
+        
+    
+        //return
     },
 
     addNP : function(event) {
 
            
-           console.log('e.currentTarget: ', event.currentTarget);
+           console.log('e.currentTarget: ', event.Target);
            var inputDurata=parseInt(this.durata.value);
            var inputNume =  this.nume.value;
            var inputNumar = this.numar.value;
@@ -217,11 +258,11 @@ var clienti = {
 
            if(sel === "time"){
             alert("nu este selctata ora");
-              urn;
+              return;
 
            } else {
 
-            for(j=0 ; j<tot.length;j++){      /////daca poti face pana unde vrei tu autocomplete la ora 
+            for(var j=0 ; j<tot.length;j++){      /////daca poti face pana unde vrei tu autocomplete la ora 
 //o condtiie cu programarea introdusa e valida 
 //
 
@@ -232,17 +273,29 @@ var clienti = {
                     //sel = tot[j].children[0].innerHTML;
                     if(tot[j].children[1].innerHTML == '') {
 
+                        if (this.cateOreLibere(j,tot) < inputDurata) 
+                        {
+                            alert("Este deja o programare pt aceasta ora");
+                            return;
+                        }
+                        //console.log
+                        //console.log(this.cateOreLibere(j,tot));
+                        //console.log('j:',j,'tot:',tot);
 
-                    tot[j].children[1].innerHTML = inputNume + " " +inputNumar;
-                    for(k=j;k<j+inputDurata;k++)//de la ora la care incepe programarea[i] inca cat dureaza programarea (duratap)
-                    {
-                 
-                        tot[k].children[1].innerHTML = inputNume + " " +inputNumar;
+                        tot[j].children[1].innerHTML = inputNume + " " +inputNumar;
 
-                  
-                    };
-                    //return;
-                    console.log('iDurata:',inputDurata)
+                        for(var k=j;k<j+inputDurata;k++)//de la ora la care incepe programarea[i] inca cat dureaza programarea (duratap)
+                        {
+                            //if(inputDurata == )
+                            tot[k].children[1].innerHTML = inputNume + " " +inputNumar;
+                            
+                        };
+                        
+                        //return;
+                        this.manipulator_progFacute(inputNume,inputNumar,inputDurata);
+                        console.log('iDurata:',inputDurata);
+                        console.log('inputNume:',typeof inputNume);
+                        console.log('inputNumar:',typeof inputNumar);
                     } else {
                         alert("Este deja o programare pt aceasta ora");
                         return;
@@ -257,7 +310,57 @@ var clienti = {
 
     },
 
-    
+    manipulator_progFacute: function(iName,iNumber,iDuration)
+    {
+       this.name= iName; 
+       this.number= iNumber; 
+       this.duration= iDuration; 
+        
+        this.comparat = this.name + " " + this.number;
+        console.log('1/3this.comparat ar trebui sa fie egal cu numele spatiu telefon :',this.comparat);
+       var obj_date_programari = {};
+       var count = 0;
+       var parent_prog = document.getElementsByClassName("orar");
+
+            var prg=[]; //array cu divurile unei programari
+            for(var i=0; i<parent_prog.length; i++)
+                {
+
+                    if(this.comparat == parent_prog[i].children[1].innerHTML) 
+                    {
+                        count++;
+                        var a  = parent_prog[i].children[1];   
+                        prg.push(a);
+                        //console.log("this.programarilePeDivuri in interiorul functii: " ,this.programarilePeDivuri);
+                    //puteam folosi aceste 2 divuri sa si schimbe stilul simultan?    
+                        console.log('2/3 count este : ',count);
+                        console.log('3/3 sunt in if iar parent_prog[i].children[1].innerHTML este ',parent_prog[i].children[1].innerHTML);
+                    }
+
+
+                };
+            this.programarilePeDivuri.push(prg);
+
+            this.eventPeFiecareArrayProg();
+        // for(var j=0;j<this.programarilePeDivuri.length;j++)
+        // {
+        //     var b= this.programarilePeDivuri[i];
+            
+        //     this.programarilePeDivuri[i].addEventListener('mouseover',function(e){
+        //         b = e.target;
+        //         b.style.backgroundColor = 'white'; 
+        //     } );   
+                        
+                
+        // };
+
+           
+//var pacient_Un= new manipulator_progFacute 
+       console.log('1.numele preluate din addNP: ',this.name);
+       console.log('2.numarul  preluate din addNP: ',this.number);
+       console.log('3.durata preluate din addNP: ',this.duration);
+
+    },
     createSelector: function(){
 
         var selectEl = document.getElementById('select');
@@ -265,7 +368,7 @@ var clienti = {
         selectEl.appendChild(first);   
         //var option = document.createElement('option');
         //selectEl.appendChild(allOpt);
-        for(i=0;i<this.orarTest.length;i++){
+        for(var i=0;i<this.orarTest.length;i++){
 
             var unTime = this.createTimeSelect(this.orarTest[i]);
             //select.appendChild(option);
@@ -278,6 +381,27 @@ var clienti = {
 
     },
     
+    cateOreLibere:function(iterator,ore)
+            {
+                var totalOreLiber = 0;
+                for(var j=iterator;j<ore.length;j++) 
+                {
+                    //console.log(ore[j].children[1].innerHTML);
+                    if(ore[j].children[1].innerHTML == '')
+                    {
+                        totalOreLiber++;
+                        //onsole.log(true);
+                        console.log('cate ore se mai pot ocupa ',totalOreLiber)    
+                    } else {
+
+                        return totalOreLiber;
+                    
+                    }
+                
+                }
+                console.log('cate ore sunt valabile de la ora unde ai dat click  ',totalOreLiber)    
+                return totalOreLiber;   
+            },    
     unEventPeOre : function() 
         {
             var ore = document.getElementsByClassName('orar');
@@ -286,18 +410,32 @@ var clienti = {
             //var ore = document.getElementsByClassName('oraText');
 
            // console.log('selecttime',selectTime.options.text);
+
             function io(e)
 
                 {
-                   for(var i = 0;i<selectTime.options.length;i++){ 
-                    console.log(selectTime.options[i].text);
+                    //var optIndex=0;
+
+                    //punem un event listener pe fiecare optiune din select 
+                   for(var i = 0;i<selectTime.options.length;i++){ //iar daca
+                        //console.log(selectTime.options[i].text);/// current targetul evenimentului este egala cu orice ora 
+                        if(e.currentTarget.children[0].innerHTML == selectTime.options[i].text ){//din textul (select.options.text)
+                            //in iful asta se gaseste ora pe care am dat click 
+                            //cateOreLibere(i);                           
+                            selectTime.options[i].selected = true; //i este pe ce am dat eu click 
+                            //var oreLibere = cateOreLibere(i);
+                            //console.log(cateOreLibere(i));
+                            console.log('i este numarul orei pe care am dat click ',i);
+                            document.getElementById('value-duration').value = this.cateOreLibere(i,ore);
+                            console.log('ore din orar clssname orar ',ore);
+                            console.log('oreLibere ',this.cateOreLibere(i,ore));
+                        }
                     
 
+                    }
 
-                    if(e.currentTarget.children[0].innerHTML == selectTime.options[i].text){
-                    selectTime.options[i].selected = true;
-                        }
-                    }                        
+
+
                     var divAscuns = document.getElementById('popupDiv');
                     
                         if(divAscuns.style.display == 'block'){
@@ -315,7 +453,7 @@ var clienti = {
                 };
             for(var i = 0 ; i<this.orarTest.length;i++)
                 {
-                    ore[i].addEventListener('click', io , false);
+                    ore[i].addEventListener('click', io.bind(this) , false);
                     
                     
                 };
@@ -326,7 +464,7 @@ var clienti = {
         var orarTitlu = this.createTableElement('orar bold','Orar');
         this.continut.appendChild(orarTitlu);
         
-        for(i=0;i<this.orarTest.length;i++) {
+        for(var i=0;i<this.orarTest.length;i++) {
 
             var rand = this.createTableElement('orar bold', this.orarTest[i]);
             this.continut.appendChild(rand);
